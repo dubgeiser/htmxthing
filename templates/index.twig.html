@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+  </head>
+  <body>
+    <h1>htmx test</h1>
+
+    <button
+      hx-get="/initdb"
+      hx-swap="outerHTML"
+    >Seed database</button>
+
+    <button
+      hx-get="/people"
+      hx-target="#people"
+    >Show people</button>
+
+    <div id="people"></div>
+
+  </body>
+</html>

@@ -1,0 +1,12 @@
+<form hx-put="/person/{{ person.id }}" hx-target="this" hx-swap="outerHTML">
+  <div>
+    <label>Name</label>
+    <input type="text" name="name" value="{{ person.name }}">
+  </div>
+  <div>
+    <label>Email</label>
+    <input type="email" name="email" value="{{ person.email }}">
+  </div>
+  <button>Save</button>
+  <button hx-get="/person/{{ person.id }}">Cancel</button>
+</form>

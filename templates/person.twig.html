@@ -1,0 +1,8 @@
+<div hx-target="this" hx-swap="outerHMTL">
+  <div><label>Name</label>: {{ person.name }}</div>
+  <div><label>Email</label>: {{ person.email }}</div>
+
+  <button hx-get="/person/{{ person.id }}/edit">
+    Edit
+  </button>
+</div>

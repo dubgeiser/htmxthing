@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>E-mail</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in people %}
+    <tr>
+      <td>{{ p.name }}</td>
+      <td>{{ p.email }}</td>
+      <td><button hx-get="/person/{{ p.id }}" hx-target="#people">Detail</button></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
