@@ -79,18 +79,41 @@ class Application
 
     public function person(Request $request): Response
     {
-        if ($request->getMethod() == "PUT") {
-            $this->storage->savePerson([
+        switch($request->getMethod()) {
+            case "PUT":
+                $this->storage->savePerson([
+                    'name' => $request->get("name"),
+                    'email' => $request->get("email"),
+                    'id' => $request->get("id"),
+                ]);
+            // Intentional fall-through, since same rendering is used as
+            // normal GET when updating a person.
+            case "GET":
+                return new Response(
+                    $this->tpl->render('person.twig.html', [
+                        'person' => $this->storage->getPerson((int)$request->get('id'))
+                    ])
+                );
+            case "DELETE":
+                $this->storage->deletePerson($request->get("id"));
+                return new Response("");
+        }
+    }
+
+    public function personAdd(Request $request): Response
+    {
+        if ($request->getMethod() == "POST") {
+            $id = $this->storage->addPerson([
                 'name' => $request->get("name"),
                 'email' => $request->get("email"),
-                'id' => $request->get("id"),
             ]);
+            return new Response(
+                $this->tpl->render('person.twig.html', [
+                    'person' => $this->storage->getPerson($id)
+                ])
+            );
         }
-        return new Response(
-            $this->tpl->render('person.twig.html', [
-                'person' => $this->storage->getPerson((int)$request->get('id'))
-            ])
-        );
+        return new Response($this->tpl->render('person-add.twig.html'));
     }
 
     public function personEdit(Request $request): Response
@@ -117,6 +140,10 @@ class Application
         $routes->add(
             "person_edit",
             new Route("/person/{id}/edit", ["_controller" => [$this, "personEdit"]], ['id' => '\d+'])
+        );
+        $routes->add(
+            "person_add",
+            new Route("/person/add", ["_controller" => [$this, "personAdd"]])
         );
         $routes->add("initdb", new Route("/initdb", ["_controller" => [$this, "initDb"]]));
         return $routes;

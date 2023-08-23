@@ -54,4 +54,17 @@ class Storage
             $statement->execute($record);
         }
     }
+
+    public function deletePerson(int $id): int
+    {
+        return $this->db->prepare("DELETE FROM people WHERE id = :id")
+            ->execute(["id" => $id]);
+    }
+
+    public function addPerson(array $array): int
+    {
+        $statement = $this->db->prepare("INSERT INTO people (name, email) VALUES (:name, :email)");
+        $statement->execute($array);
+        return $this->db->lastInsertId();
+    }
 }
