@@ -14,6 +14,7 @@ class Storage
     public function __construct(PDO $db)
     {
         $this->faker = Factory::create();
+        $this->faker->seed("This my seed, many like it, but this mine.");
         $this->db = $db;
     }
 
@@ -35,7 +36,7 @@ class Storage
             ->execute($p);
     }
 
-    public function initDb(): void
+    public function seedDatabase(): void
     {
         $this->db->exec("DROP TABLE IF EXISTS people");
         $this->db->exec("CREATE TABLE people (

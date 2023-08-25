@@ -127,7 +127,7 @@ class Application
 
     public function initDb(): Response
     {
-        $this->storage->initDb();
+        $this->storage->seedDatabase();
         return new Response("Database seeded");
     }
 
