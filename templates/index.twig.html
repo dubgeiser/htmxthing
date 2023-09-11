@@ -11,6 +11,13 @@
   </head>
   <body>
     <h1>htmx test</h1>
+    <p>
+     Count: <span id="people_count"
+       hx-get="/people_count"
+       hx-trigger="people_changed from:body"
+       hx-swap="innerHTML"
+      >{{ people_count }}</span>
+    </p>
 
     <button
       hx-get="/initdb"
@@ -27,7 +34,9 @@
       hx-target="#people"
     >Add person</button>
 
-    <div id="people"></div>
+    <div id="people">
+      {% include 'people.twig.html' %}
+    </div>
 
   </body>
 </html>

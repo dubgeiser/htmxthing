@@ -65,16 +65,12 @@ class Application
 
     public function index(Request $request): Response
     {
-        return new Response(
-            $this->tpl->render('index.twig.html', [])
-        );
+        return $this->peopleList('index.twig.html');
     }
 
     public function people(Request $request): Response
     {
-        return new Response($this->tpl->render('people.twig.html', [
-            'people' => $this->storage->getPeople(),
-        ]));
+        return $this->peopleList('people.twig.html');
     }
 
     public function person(Request $request): Response
@@ -96,7 +92,7 @@ class Application
                 );
             case "DELETE":
                 $this->storage->deletePerson($request->get("id"));
-                return new Response("");
+                return $this->peopleCountChanged("");
         }
     }
 
@@ -107,7 +103,7 @@ class Application
                 'name' => $request->get("name"),
                 'email' => $request->get("email"),
             ]);
-            return new Response(
+            return $this->peopleCountChanged(
                 $this->tpl->render('person.twig.html', [
                     'person' => $this->storage->getPerson($id)
                 ])
@@ -128,7 +124,27 @@ class Application
     public function initDb(): Response
     {
         $this->storage->seedDatabase();
-        return new Response("Database seeded");
+        return $this->peopleCountChanged("Database seeded");
+    }
+
+    public function peopleCount(Request $request): Response
+    {
+        return new Response($this->storage->getPeopleCount());
+    }
+
+    private function peopleList(string $template): Response
+    {
+        return new Response($this->tpl->render($template, [
+            'people' => $this->storage->getPeople(),
+            'people_count' => $this->storage->getPeopleCount(),
+        ]));
+    }
+
+    private function peopleCountChanged(string $content): Response
+    {
+        $r = new Response($content);
+        $r->headers->add(["HX-Trigger" => "people_changed"]);
+        return $r;
     }
 
     private function getRoutes(): RouteCollection
@@ -146,6 +162,7 @@ class Application
             new Route("/person/add", ["_controller" => [$this, "personAdd"]])
         );
         $routes->add("initdb", new Route("/initdb", ["_controller" => [$this, "initDb"]]));
+        $routes->add("people_count", new Route("/people_count", ["_controller" => [$this, "peopleCount"]]));
         return $routes;
     }
 

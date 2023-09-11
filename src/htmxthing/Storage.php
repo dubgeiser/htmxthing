@@ -18,6 +18,11 @@ class Storage
         $this->db = $db;
     }
 
+    public function getPeopleCount(): int
+    {
+        return $this->db->query("SELECT COUNT(*) AS people_count FROM people")->fetchColumn();
+    }
+
     public function getPeople(): array
     {
         return $this->db->query("SELECT * FROM people")->fetchAll();
