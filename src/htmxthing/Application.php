@@ -35,6 +35,8 @@ use Twig\Environment;
  */
 class Application
 {
+    const INITIAL_NUMBER_OF_PEOPLE = 1000;
+
     private array $conf = [
         'db' => [
             'dsn' => 'mysql:dbname=test;socket=/tmp/mysql.sock',
@@ -123,7 +125,7 @@ class Application
 
     public function initDb(): Response
     {
-        $this->storage->seedDatabase();
+        $this->storage->seedDatabase(self::INITIAL_NUMBER_OF_PEOPLE);
         return $this->peopleCountChanged("Database seeded");
     }
 

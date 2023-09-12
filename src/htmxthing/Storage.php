@@ -41,7 +41,7 @@ class Storage
             ->execute($p);
     }
 
-    public function seedDatabase(): void
+    public function seedDatabase(int $numberOfPeople): void
     {
         $this->db->exec("DROP TABLE IF EXISTS people");
         $this->db->exec("CREATE TABLE people (
@@ -52,7 +52,7 @@ class Storage
         $statement = $this->db->prepare(
             "INSERT INTO people (name, email) VALUES (:name, :email)"
         );
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < $numberOfPeople; $i++) {
             $record = [
                 "name" => $this->faker->name(),
                 "email" => $this->faker->email(),
