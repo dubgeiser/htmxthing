@@ -1,9 +1,9 @@
 {
     "require": {
-        "symfony/http-kernel": "^6.3",
-        "symfony/routing": "^6.3",
-        "twig/twig": "^3.7",
-        "fakerphp/faker": "^1.23"
+        "symfony/http-kernel": "^7",
+        "symfony/routing": "^7",
+        "twig/twig": "^3",
+        "fakerphp/faker": "^1"
     },
     "autoload": {
         "psr-4": {"": "src/"}
